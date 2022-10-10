@@ -1,0 +1,279 @@
+{
+  // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "pact_js_example_client_axios": {
+    "body": [
+      "// run the following 2 commands in your terminal",
+      "//",
+      "// npm install @pact-foundation/pact jest axios --save-dev",
+      "// $(npm bin)/jest --init",
+      "//",
+      "// select the following options ( n / node / n / v8 / n )",
+      "//",
+      "// ✔ Would you like to use Typescript for the configuration file? … no",
+      "// ✔ Choose the test environment that will be used for testing › node",
+      "// ✔ Do you want Jest to add coverage reports? … no",
+      "// ✔ Which provider should be used to instrument code for coverage? › v8",
+      "// ✔ Automatically clear mock calls, instances, contexts and results before every test? … no",
+      "const axios = require(\"axios\");",
+      "const defaultBaseUrl = \"http://your-api.example.com\";",
+      "const api = (baseUrl = defaultBaseUrl) => ({",
+      "  getHealth: () =>",
+      "    axios.get(baseUrl + '/health').then((response) => response.data.status),",
+      "  /* other endpoints here */",
+      "});",
+      ""
+    ],
+    "description": "setups an sample client",
+    "prefix": "pact_example_client",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_test_v3": {
+    "body": [
+      "// run the following 2 commands in your terminal",
+      "//",
+      "// npm install @pact-foundation/pact jest axios --save-dev",
+      "// $(npm bin)/jest --init",
+      "//",
+      "// select the following options ( n / node / n / v8 / n )",
+      "//",
+      "// ✔ Would you like to use Typescript for the configuration file? … no",
+      "// ✔ Choose the test environment that will be used for testing › node",
+      "// ✔ Do you want Jest to add coverage reports? … no",
+      "// ✔ Which provider should be used to instrument code for coverage? › v8",
+      "// ✔ Automatically clear mock calls, instances, contexts and results before every test? … no",
+      "const axios = require(\"axios\");",
+      "const defaultBaseUrl = \"http://your-api.example.com\";",
+      "const api = (baseUrl = defaultBaseUrl) => ({",
+      "  getHealth: () =>",
+      "    axios.get(baseUrl + '/health').then((response) => response.data.status),",
+      "  /* other endpoints here */",
+      "});",
+      "",
+      "const { PactV3, MatchersV3 } = require(\"@pact-foundation/pact\");",
+      "",
+      "const provider = new PactV3({",
+      "  consumer: \"replace with consumer name\",",
+      "  provider: \"replace with provider name\",",
+      "});",
+      "",
+      "const {",
+      "  eachLike,",
+      "  atLeastLike,",
+      "  integer,",
+      "  datetime,",
+      "  boolean,",
+      "  string,",
+      "  regex,",
+      "  like,",
+      "  eachKeyLike,",
+      "} = MatchersV3;",
+      "",
+      "describe(\"test with pact\", () => {",
+      "  it(\"should setup a test with pact\", () => {",
+      "    provider",
+      "      .given(\"Server is healthy\")",
+      "      .uponReceiving(\"A request for API health\")",
+      "      .withRequest({",
+      "        method: \"GET\",",
+      "        path: \"/health\",",
+      "      })",
+      "      .willRespondWith({",
+      "        status: 200,",
+      "        body: { status: like(\"up\") },",
+      "      });",
+      "    return provider.executeTest((mockserver) => {",
+      "      const client = api(mockserver.url);",
+      "      return client.getHealth().then((health) => {",
+      "        expect(health).toEqual(\"up\");",
+      "      });",
+      "    });",
+      "  });",
+      "});"
+    ],
+    "description": "setups an e2e pact v3 test",
+    "prefix": "pacttestv3",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_setup_v3": {
+    "body": [
+      "const { PactV3, MatchersV3 } = require('@pact-foundation/pact');",
+      "const provider = new PactV3({",
+      "  consumer: 'replace with consumer name',",
+      "  provider: 'replace with provider name',",
+      "});"
+    ],
+    "description": "setups a pact mock provider v3",
+    "prefix": "pactsetupv3",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_matchers_v3": {
+    "body": [
+      "const {",
+      "  eachLike,",
+      "  atLeastLike,",
+      "  integer,",
+      "  datetime,",
+      "  boolean,",
+      "  string,",
+      "  regex,",
+      "  like,",
+      "  eachKeyLike,",
+      "} = MatchersV3;"
+    ],
+    "description": "imports pact v3 matchers",
+    "prefix": "pactmatchersv3",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_interaction_v3": {
+    "body": [
+      "provider",
+      "  .given('${1:Server is healthy}')",
+      "  .uponReceiving('${2:A request for API health}')",
+      "  .withRequest({",
+      "    method: '${3|GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS,COPY,LOCK,MKCOL,MOVE,PROPFIND,PROPPATCH,UNLOCK,REPORT|}',",
+      "    path: '/${4:health}',",
+      "  })",
+      "  .willRespondWith({",
+      "    status: 200,",
+      "    body: { status: MatchersV3.like('up') },",
+      "  });",
+      "return provider.executeTest((mockserver) => {",
+      "// const client = apiClient(mockserver.url);",
+      "// const result = client.makeRequest();",
+      "// expect(result).toEqual();",
+      "  return;",
+      "});"
+    ],
+    "description": "creates a pact interaction v3",
+    "prefix": "pactintv3",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_setup_v2": {
+    "body": [
+      "const { Pact, Matchers } = require('@pact-foundation/pact');",
+      "const provider = new Pact({",
+      "  consumer: 'replace with consumer name',",
+      "  provider: 'replace with provider name',",
+      "});"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactsetupv2",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_lifecycle_hooks_v2": {
+    "body": [
+      "beforeAll(() => provider.setup());",
+      "afterEach(() => provider.verify());",
+      "afterAll(() => provider.finalize());"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactlifecyclev2",
+    "scope": "javascript,typescript"
+  },
+  "pact_js_interaction_v2": {
+    "body": [
+      "provider.addInteraction({",
+      "  state: '${1:Server is healthy}',",
+      "  uponReceiving: '${2:A request for API health}',",
+      "  withRequest: {",
+      "    method: '${3:GET}',",
+      "    path: '/${4:health}',",
+      "  },",
+      "  willRespondWith: {",
+      "    status: 200,",
+      "    body: { status: like('up') },",
+      "  },",
+      "});",
+      "// Configure your client under test to use the Pact mock service URL",
+      "// const client = api(provider.mockService.baseUrl);",
+      "return client.getHealth().then((health) => {",
+      "  expect(health).toEqual('up');",
+      "});"
+    ],
+    "description": "creates a pact interaction v2",
+    "prefix": "pactintv2",
+    "scope": "javascript,typescript"
+  },
+  "pact_python_setup_v2": {
+    "body": [
+      "import atexit",
+      "from pact import Consumer, Provider",
+      "pact = Consumer('Consumer').has_pact_with(Provider('Provider'),log_dir='./logs',pact_dir='./pacts')",
+      "pact.start_service()",
+      "atexit.register(pact.stop_service)"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactsetupv2",
+    "scope": "python"
+  },
+  "pact_python_interaction_v2": {
+    "body": [
+      "(pact",
+      " .given('UserA exists and is not an administrator')",
+      " .upon_receiving('a request for UserA')",
+      " .with_request('get', '/users/UserA')",
+      " .will_respond_with(200, body=expected))",
+      "with pact:",
+      "  result = user('UserA')",
+      "",
+      "self.assertEqual(result, expected)",
+      "pact.verify()"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactintv2",
+    "scope": "python"
+  },
+  "pact_ruby_setup_v2": {
+    "body": [
+      "require 'pact/consumer/rspec'",
+      "# or require 'pact/consumer/minitest' if you are using Minitest",
+      "",
+      "Pact.configure do |config|",
+      "  # Default is ./specs/pacts",
+      "  config.pact_dir = './pacts'",
+      "  config.log_dir = './logs'",
+      "end",
+      "",
+      "Pact.service_consumer 'consumer-ruby-v2' do",
+      "  has_pact_with 'provider-ruby-v2' do",
+      "    mock_service :provider_service do",
+      "      port 1234",
+      "      # host '...' # optional, defaults to 'localhost'",
+      "    end",
+      "  end",
+      "end"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactsetupv2",
+    "scope": "ruby"
+  },
+  "pact_ruby_interaction_v2": {
+    "body": [
+      "provider_service.given('Server is healthy')",
+      "                .upon_receiving('A request for API health')",
+      "                .with(method: :get, path: '/health')",
+      "                .will_respond_with(",
+      "                  status: 200,",
+      "                  body: { status: 'up' }",
+      "                )"
+    ],
+    "description": "setups a pact mock provider v2",
+    "prefix": "pactintv2",
+    "scope": "ruby"
+  }
+}
