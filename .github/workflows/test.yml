@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-node:
     runs-on: ubuntu-latest
 
     strategy:
@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Language - ${{ env.language }} ${{ node-version }}
+      - name: Setup Language - ${{ env.language }} ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: ${{ env.language }}/package-lock.json
       - run: make deps
