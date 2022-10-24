@@ -1,0 +1,31 @@
+name: Pact test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16.x]
+    env:
+      language: js
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Language - ${{ env.language }} ${{ node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'npm'
+          cache-dependency-path: ${{ env.language }}/package-lock.json
+      - run: make deps
+        working-directory: ${{ env.language }}
+      - run: make test
+        name: test
+        working-directory: ${{ env.language }}
