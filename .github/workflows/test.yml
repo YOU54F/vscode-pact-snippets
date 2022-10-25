@@ -10,8 +10,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language_version: [14.x, 16.x, 18.x]
-        runner: [ubuntu-latest, windows-latest, macos-latest]
+        language_version: [16.x]
+        runner: [ubuntu-latest]
+        # language_version: [14.x, 16.x, 18.x]
+        # runner: [ubuntu-latest, windows-latest, macos-latest]
     env:
       language: js
     runs-on: ${{ matrix.runner }}
@@ -70,15 +72,15 @@ jobs:
       - uses: actions/checkout@v3
         # with:
         #   path: ${{ env.GOPATH }}/${{ env.language }}
-      # - name: setup env
-      #   shell: bash
-      #   run: |
-      #     echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
-      #     echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.language_version }}
+      - name: setup env
+        shell: bash
+        run: |
+          echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
+          echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
       - run: make deps
         working-directory: ${{ env.language }}
       - run: make test
