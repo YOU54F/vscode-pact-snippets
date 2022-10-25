@@ -76,10 +76,12 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.language_version }}
+          cache: true
+          cache-dependency-path: ${{ matrix.language_version }}/go.sum
       - name: setup env
         shell: bash
         run: |
-          echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
+          echo "GOPATH=${{ github.workspace }}" >> $GITHUB_ENV
           echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
       - run: make deps
         working-directory: ${{ env.language }}
