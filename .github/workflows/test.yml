@@ -69,15 +69,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: ${{ env.language }}
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
         uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.language_version }}
+      - run: echo $(go env GOPATH)/bin >> $GITHUB_PATH
       - run: make deps
+        working-directory: ${{ env.language }}
       - run: make test
         name: test
+        working-directory: ${{ env.language }}
 
   test-python:
     runs-on: ubuntu-latest
