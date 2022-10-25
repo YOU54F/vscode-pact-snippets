@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16.x]
+        language_version: [16.x]
     env:
       language: js
 
@@ -24,6 +24,74 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
           cache-dependency-path: ${{ env.language }}/package-lock.json
+      - run: make deps
+        working-directory: ${{ env.language }}
+      - run: make test
+        name: test
+        working-directory: ${{ env.language }}
+
+  test-ruby:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language_version: ['2.7', '3.0', '3.1']
+        experimental: [false]
+    env:
+      language: ruby
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.language_version }}
+      - run: make deps
+        working-directory: ${{ env.language }}
+      - run: make test
+        name: test
+        working-directory: ${{ env.language }}
+
+  test-go:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language_version: [1.17.x, 1.18.x]
+        experimental: [false]
+    env:
+      language: go
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.language_version }}
+      - run: make deps
+        working-directory: ${{ env.language }}
+      - run: make test
+        name: test
+        working-directory: ${{ env.language }}
+
+  test-python:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language_version: [3.7, 3.8, 3.9, '3.10']
+    env:
+      language: python
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.language_version }}
       - run: make deps
         working-directory: ${{ env.language }}
       - run: make test

@@ -11,8 +11,6 @@ const { PactV3, MatchersV3 } = require("@pact-foundation/pact");
 const provider = new PactV3({
   consumer: "consumer-js-v3",
   provider: "provider-js-v3",
-  logLevel: "trace",
-  logFile: "./foo.txt",
 });
 
 const {
