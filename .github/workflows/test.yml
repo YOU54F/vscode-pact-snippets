@@ -66,20 +66,20 @@ jobs:
         # language_version: [1.17.x, 1.18.x]
     env:
       language: go
-    defaults:
-      run:
-        working-directory: ${{ env.language }}
+    # defaults:
+    #   run:
+    #     working-directory: ${{ env.language }}
 
     steps:
       - uses: actions/checkout@v3
-        # with:
-        #   path: ${{ env.GOPATH }}/${{ env.language }}
+        with:
+          path: ${{ env.language }}
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
         uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.language_version }}
-          cache: true
-          cache-dependency-path: ${{ env.language }}/go.sum
+          # cache: true
+          # cache-dependency-path: ${{ env.language }}/go.sum
       # - name: setup env
       #   shell: bash
       #   run: |
