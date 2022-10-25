@@ -66,6 +66,9 @@ jobs:
         # language_version: [1.17.x, 1.18.x]
     env:
       language: go
+    defaults:
+      run:
+        working-directory: ${{ env.language }}
 
     steps:
       - uses: actions/checkout@v3
