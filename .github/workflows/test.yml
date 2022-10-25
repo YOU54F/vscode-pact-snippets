@@ -7,14 +7,14 @@ on:
 
 jobs:
   test-node:
-    runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
-        language_version: [16.x]
+        language_version: [14.x, 16.x, 18.x]
+        runner: [ubuntu-latest, windows-latest, macos-latest]
     env:
       language: js
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v3
@@ -30,28 +30,28 @@ jobs:
         name: test
         working-directory: ${{ env.language }}
 
-  test-ruby:
-    runs-on: ubuntu-latest
+  # test-ruby:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language_version: ['2.7', '3.0', '3.1']
-        experimental: [false]
-    env:
-      language: ruby
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       language_version: ['2.7', '3.0', '3.1']
+  #       experimental: [false]
+  #   env:
+  #     language: ruby
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.language_version }}
-      - run: make deps
-        working-directory: ${{ env.language }}
-      - run: make test
-        name: test
-        working-directory: ${{ env.language }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: ${{ matrix.language_version }}
+  #     - run: make deps
+  #       working-directory: ${{ env.language }}
+  #     - run: make test
+  #       name: test
+  #       working-directory: ${{ env.language }}
 
   test-go:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
         # language_version: [1.17.x, 1.18.x]
     env:
       language: go
-      GOPATH: ${{ github.workspace }}/go
+      GOPATH: ${{ github.workspace }}
       GOBIN: ${{ github.workspace }}/bin
 
     steps:
@@ -85,24 +85,24 @@ jobs:
         name: test
         working-directory: ${{ env.language }}
 
-  test-python:
-    runs-on: ubuntu-latest
+  # test-python:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language_version: [3.7, 3.8, 3.9, '3.10']
-    env:
-      language: python
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       language_version: [3.7, 3.8, 3.9, '3.10']
+  #   env:
+  #     language: python
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.language_version }}
-      - run: make deps
-        working-directory: ${{ env.language }}
-      - run: make test
-        name: test
-        working-directory: ${{ env.language }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: ${{ matrix.language_version }}
+  #     - run: make deps
+  #       working-directory: ${{ env.language }}
+  #     - run: make test
+  #       name: test
+  #       working-directory: ${{ env.language }}
