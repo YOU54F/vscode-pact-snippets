@@ -77,13 +77,13 @@ jobs:
           go-version: ${{ matrix.language_version }}
           cache: true
           cache-dependency-path: ${{ env.language }}/go.sum
-      - name: setup env
-        shell: bash
-        run: |
-          echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
-          echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
-      - run: make deps
-        working-directory: ${{ env.language }}
+      # - name: setup env
+      #   shell: bash
+      #   run: |
+      #     echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
+      #     echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
+      # - run: make deps
+      #   working-directory: ${{ env.language }}
       - run: make test
         name: test
         working-directory: ${{ env.language }}
