@@ -65,14 +65,11 @@ jobs:
       language: go
       GOPATH: ${{ github.workspace }}
       GOBIN: ${{ github.workspace }}/bin
-    defaults:
-      run:
-        working-directory: ${{ env.GOPATH }}/${{ env.language }}
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: ${{ env.GOPATH }}/${{ env.language }}
+        # with:
+        #   path: ${{ env.GOPATH }}/${{ env.language }}
       # - name: setup env
       #   shell: bash
       #   run: |
