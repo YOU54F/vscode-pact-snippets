@@ -82,8 +82,8 @@ jobs:
       #   run: |
       #     echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
       #     echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
-      # - run: make deps
-      #   working-directory: ${{ env.language }}
+      - run: make deps
+        working-directory: ${{ env.language }}
       - run: make test
         name: test
         working-directory: ${{ env.language }}
