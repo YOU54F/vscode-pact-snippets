@@ -63,25 +63,30 @@ jobs:
         # language_version: [1.17.x, 1.18.x]
     env:
       language: go
-      LD_LIBRARY_PATH: /tmp
-      PACT_GO_LIB_DOWNLOAD_PATH: /tmp
+      GOPATH: ${{ github.workspace }}
+      GOBIN: ${{ github.workspace }}/bin
+    defaults:
+      run:
+        working-directory: ${{ env.GOPATH }}/${{ env.language }}
 
     steps:
       - uses: actions/checkout@v3
-      - name: setup env
-        shell: bash
-        run: |
-          echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
-          echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
+        with:
+          path: ${{ env.GOPATH }}/${{ env.language }}
+      # - name: setup env
+      #   shell: bash
+      #   run: |
+      #     echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
+      #     echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.language_version }}
       - run: make deps
-        working-directory: ${{ env.language }}
+        # working-directory: ${{ env.language }}
       - run: make test
         name: test
-        working-directory: ${{ env.language }}
+        # working-directory: ${{ env.language }}
 
   test-python:
     runs-on: ubuntu-latest
