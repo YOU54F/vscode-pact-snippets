@@ -73,7 +73,7 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.language_version }}
-      - run: echo ${{ github.workspace }}/go/bin >> $GITHUB_PATH
+      - run: echo /home/runner/go/go/bin >> $GITHUB_PATH
       - run: make deps
         working-directory: ${{ env.language }}
       - run: make test
