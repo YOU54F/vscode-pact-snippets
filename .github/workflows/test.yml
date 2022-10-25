@@ -70,10 +70,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.language_version }}
-      - run: echo /home/runner/go/go/bin >> $GITHUB_PATH
+      - run: echo /home/runner/go/bin >> $GITHUB_PATH
       - run: make deps
         working-directory: ${{ env.language }}
       - run: make test
