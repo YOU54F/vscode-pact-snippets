@@ -71,8 +71,8 @@ jobs:
       - name: setup env
         shell: bash
         run: |
-          echo "::set-env name=GOPATH::${{ github.workspace }}/go"
-          echo "::add-path::${{ github.workspace }}/go/bin"
+          echo "GOPATH=${{ github.workspace }}/go" >> $GITHUB_ENV
+          echo "${{ github.workspace }}/go/bin" >> $GITHUB_PATH
       - name: Setup Language - ${{ env.language }} ${{ matrix.language_version }}
         uses: actions/setup-go@v2
         with:
