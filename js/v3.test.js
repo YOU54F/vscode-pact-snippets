@@ -5,6 +5,7 @@ const api = (baseUrl = defaultBaseUrl) => ({
     axios.get(baseUrl + "/health").then((response) => response.data.status),
   /* other endpoints here */
 });
+import { expect, describe, it } from 'vitest'
 
 const { PactV3, MatchersV3 } = require("@pact-foundation/pact");
 
