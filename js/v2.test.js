@@ -10,6 +10,8 @@ const { Pact, Matchers } = require("@pact-foundation/pact");
 const provider = new Pact({
   consumer: "consumer-js-v2",
   provider: "provider-js-v2",
+  host: "127.0.0.1",
+  port: 9999
 });
 
 const { regex, like } = Matchers;

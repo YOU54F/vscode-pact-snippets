@@ -12,7 +12,8 @@ const provider = new PactV3({
   consumer: "consumer-js-v3",
   provider: "provider-js-v3",
   logLevel: "trace",
-  logFile: "./foo.txt",
+  host: "127.0.0.1",
+  port: 9999
 });
 
 const {
